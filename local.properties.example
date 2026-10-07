@@ -1,0 +1,7 @@
+# Copy this file to local.properties (same folder) and fill in your real values.
+# local.properties is git-ignored -- safe to put machine-specific paths here.
+
+sdk.dir=/path/to/your/Android/sdk
+
+# No API key goes here anymore -- the Gemini API key is entered once inside
+# the app itself (Settings screen) and stored encrypted on your device.
