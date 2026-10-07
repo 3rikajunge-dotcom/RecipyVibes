@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
  */
 object GeminiClient {
 
-    private const val MODEL = "gemini-2.5-flash"
+    private const val MODEL = "gemini-flash-latest"
     private const val API_URL =
         "https://generativelanguage.googleapis.com/v1beta/models/$MODEL:generateContent"
     private val JSON_MEDIA = "application/json".toMediaType()

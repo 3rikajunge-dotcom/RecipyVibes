@@ -5,6 +5,7 @@ import com.recipeapp.data.db.AppDatabase
 import com.recipeapp.data.model.*
 import com.recipeapp.network.GeminiClient
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -55,7 +56,7 @@ class RecipeRepository(private val db: AppDatabase, private val appContext: Cont
     suspend fun buildShoppingList(): List<ShoppingListLine> {
         val recipes = db.cookListDao().observeCookListRecipes()
         // Use a one-shot read via first emitted value.
-        val cookListRecipes = kotlinx.coroutines.flow.first(recipes)
+        val cookListRecipes = recipes.first()
 
         data class Key(val name: String, val unit: String?)
         val merged = LinkedHashMap<Key, MutableList<Pair<Double?, String>>>() // qty, recipeTitle
@@ -91,7 +92,7 @@ class RecipeRepository(private val db: AppDatabase, private val appContext: Cont
 
     /** Asks Gemini for suggestions given each day's desired complexity. */
     suspend fun suggestWeeklyMeals(dayComplexities: Map<String, String>): String {
-        val savedTitles = kotlinx.coroutines.flow.first(db.recipeDao().observeAll()).map { it.title }
+        val savedTitles = db.recipeDao().observeAll().first().map { it.title }
         return GeminiClient.suggestWeeklyMeals(appContext, dayComplexities, savedTitles)
     }
 }
