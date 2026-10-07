@@ -34,8 +34,8 @@ object GeminiClient {
     private val json = Json { ignoreUnknownKeys = true }
 
     private val http = OkHttpClient.Builder()
-        .connectTimeout(20, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(120, TimeUnit.SECONDS)
         .build()
 
     class NoApiKeyException : Exception("No Gemini API key saved yet. Add one in Settings.")
@@ -46,6 +46,7 @@ object GeminiClient {
 
         val generationConfig = JSONObject().apply {
             if (jsonOutput) put("responseMimeType", "application/json")
+            put("thinkingConfig", JSONObject().put("thinkingLevel", "minimal"))
         }
 
         val body = JSONObject().apply {
